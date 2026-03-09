@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+    function isTeacher() {
+      return isAuthenticated() && getUserData().role == 'TEACHER';
+    }
+
+    function isStudent() {
+      return isAuthenticated() && getUserData().role == 'STUDENT';
+    }
+
+    // User profiles
+    match /users/{uid} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(uid);
+    }
+
+    // Exams
+    match /exams/{examId} {
+      allow read: if isAuthenticated();
+      allow create: if isTeacher();
+      allow update, delete: if isTeacher() && resource.data.creatorUid == request.auth.uid;
+    }
+
+    // Reports
+    match /reports/{reportId} {
+      allow read: if isTeacher() || (isAuthenticated() && resource.data.studentUid == request.auth.uid);
+      allow create: if isStudent();
+      allow update: if isTeacher(); // Teachers might update status
+    }
+
+    // Feedback
+    match /feedback/{feedbackId} {
+      allow read: if isTeacher();
+      allow create: if isAuthenticated();
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Smart AI Proctor",
+  "description": "Smart AI Proctor - The safest anti-cheating app developed by Atharv Choudhari. Features real-time AI proctoring with face tracking and violation detection.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

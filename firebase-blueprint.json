@@ -1,0 +1,85 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile for students and teachers",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["STUDENT", "TEACHER"] },
+        "name": { "type": "string" },
+        "rollNumber": { "type": "string" },
+        "createdAt": { "type": "integer" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Exam": {
+      "title": "Exam",
+      "description": "Exam definition",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "subject": { "type": "string" },
+        "type": { "type": "string", "enum": ["MCQ", "TRUE_FALSE"] },
+        "questions": { "type": "array" },
+        "shuffleQuestions": { "type": "boolean" },
+        "shuffleOptions": { "type": "boolean" },
+        "creatorUid": { "type": "string" },
+        "createdAt": { "type": "integer" }
+      },
+      "required": ["id", "title", "subject", "type", "questions", "creatorUid"]
+    },
+    "ExamReport": {
+      "title": "ExamReport",
+      "description": "Report of a student's exam attempt",
+      "type": "object",
+      "properties": {
+        "studentUid": { "type": "string" },
+        "examId": { "type": "string" },
+        "examTitle": { "type": "string" },
+        "violations": { "type": "array" },
+        "totalWarnings": { "type": "integer" },
+        "status": { "type": "string", "enum": ["CLEAN", "SUSPICIOUS", "CHEATING"] },
+        "answers": { "type": "array" },
+        "questions": { "type": "array" },
+        "startTime": { "type": "integer" },
+        "endTime": { "type": "integer" }
+      },
+      "required": ["studentUid", "examId", "examTitle", "status", "startTime", "endTime"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User feedback or issue report",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "userName": { "type": "string" },
+        "type": { "type": "string", "enum": ["ISSUE", "SUGGESTION", "OTHER"] },
+        "message": { "type": "string" },
+        "createdAt": { "type": "integer" }
+      },
+      "required": ["userId", "type", "message", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/exams/{examId}": {
+      "schema": "Exam",
+      "description": "Exams created by teachers"
+    },
+    "/reports/{reportId}": {
+      "schema": "ExamReport",
+      "description": "Exam attempt reports"
+    },
+    "/feedback/{feedbackId}": {
+      "schema": "Feedback",
+      "description": "User feedback submissions"
+    }
+  }
+}
