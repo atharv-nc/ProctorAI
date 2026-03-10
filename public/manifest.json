@@ -1,0 +1,21 @@
+{
+  "name": "Smart AI Proctor",
+  "short_name": "AI Proctor",
+  "description": "Secure AI-powered examination proctoring system developed by Atharv Choudhari.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f5f0",
+  "theme_color": "#059669",
+  "icons": [
+    {
+      "src": "https://picsum.photos/seed/proctor/192/192",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://picsum.photos/seed/proctor/512/512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
